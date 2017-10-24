@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+
+{% block content %}
+	<main class="hero-section">
+		<div class="container">
+			<h1>Home</h1>
+			<div class="section-tabs">
+			<div class="places">
+				{% for place in places %}
+				["<h3><a href='{{ place['url'] }}' target='_blank'>{{ place['name'] }}</a></h3> <p>{{ place['time'] }} min away {{ my_coordinates }}</p>", {{ place['lat'] }}, {{ place['lng']}} ],
+				{% endfor %}
+			</div>
+			</div>
+			<div class="section-map">
+				<div class="nav">
+					<form method="POST" action="/home">
+						{{ form.hidden_tag() }}
+						<div class="form-group">
+							{{ form.address.label }}
+							{% if form.address.errors %}
+								{% for error in form.address.errors %}
+									<p class="error-message">{{ error }}</p>
+								{% endfor %}
+							{% endif %}
+							{{ form.address(placeholder="Explore nearby") }}
+						</div>
+						{{ form.submit(class="btn-primary") }}
+					</form>
+				</div>
+				<div id="mapid"></div>
+			</div>
+		</div>
+	</main>
+	<script type="text/javascript">
+		var planes = [
+			{% for place in places %}
+			["<h3><a href='{{ place['url'] }}' target='_blank'>{{ place['name'] }}</a></h3> <p>{{ place['time'] }} min away {{ my_coordinates }}</p>", {{ place['lat'] }}, {{ place['lng']}} ],
+			{% endfor %}
+		];
+		console.log(planes)
+		// var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+		// L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+  //   	attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		// }).addTo(mymap);
+
+		// L.marker([51.5, -0.09]).addTo(mymap)
+  //   	.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+  //   	.openPopup();
+	</script>
+{% endblock %}
